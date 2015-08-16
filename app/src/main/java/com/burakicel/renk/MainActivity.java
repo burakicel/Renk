@@ -1,17 +1,34 @@
 package com.burakicel.renk;
 
+import android.app.Activity;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.view.View;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity implements View.OnClickListener {
+
+    private ImageButton buttonImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        buttonImage = (ImageButton)findViewById(R.id.photoButton);
+        buttonImage.setOnClickListener(this);
+    }
+
+    public void onClick(View v){
+        switch(v.getId()){
+            case R.id.photoButton:
+                buttonImage.setImageResource(R.drawable.photo_button_click);
+                break;
+        }
+
     }
 
 
