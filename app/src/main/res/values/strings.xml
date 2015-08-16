@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="renk_description">Renk is a real time image manipulation tool.</string>
+    <string name="gallery">Check Gallery</string>
 </resources>
