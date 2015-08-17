@@ -1,5 +1,6 @@
 package com.burakicel.renk;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +31,7 @@ public class GalleryActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (!externalStorageAvailable()){
         }
@@ -131,9 +133,9 @@ public class GalleryActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
+            return true;}
 
+        onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 }
