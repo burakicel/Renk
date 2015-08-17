@@ -6,26 +6,43 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.View;
+import android.content.Intent;
+import android.os.Handler;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private ImageButton buttonImage;
+    private Button buttonGallery;
+    private Handler buttonHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        buttonImage = (ImageButton)findViewById(R.id.photoButton);
+        buttonImage = (ImageButton)findViewById(R.id.photo_button);
+        buttonGallery = (Button)findViewById(R.id.gallery_button);
         buttonImage.setOnClickListener(this);
+        buttonGallery.setOnClickListener(this);
     }
 
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.photoButton:
+            case R.id.photo_button:
                 buttonImage.setImageResource(R.drawable.photo_button_click);
+                buttonHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        buttonImage.setImageResource(R.drawable.photo_button);
+                    }
+                }, 100);
+                break;
+            case R.id.gallery_button:
+                Intent i;
+                i = new Intent(this, GalleryActivity.class);
+                startActivity(i);
                 break;
         }
 
