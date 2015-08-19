@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.burakicel.renk" >
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/photo_button"
-        android:label="@string/app_name">
+        android:label="@string/app_name" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppCombatLightActionBar">
+            android:theme="@style/AppCombatLightActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +22,12 @@
         <activity
             android:name=".GalleryActivity"
             android:label="@string/title_activity_gallery"
-            android:theme="@style/AppCombatLightActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppCombatLightActionBar" >
+        </activity>
+        <activity
+            android:name=".ImageDetailActivity"
+            android:label="@string/title_activity_image_detail" >
         </activity>
     </application>
 
