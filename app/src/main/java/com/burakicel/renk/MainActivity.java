@@ -1,8 +1,6 @@
 package com.burakicel.renk;
 
 import android.app.Activity;
-import android.media.Image;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,14 +21,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Page Views
         buttonImage = (ImageButton)findViewById(R.id.photo_button);
         buttonGallery = (Button)findViewById(R.id.gallery_button);
         buttonImage.setOnClickListener(this);
         buttonGallery.setOnClickListener(this);
     }
 
+    //Tracking Button Clicks
     public void onClick(View v){
+
         switch(v.getId()){
+            //Photo Button
             case R.id.photo_button:
                 buttonImage.setImageResource(R.drawable.photo_button_click);
                 buttonHandler.postDelayed(new Runnable() {
@@ -39,13 +42,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     }
                 }, 100);
                 break;
+            //Gallery Button
             case R.id.gallery_button:
+                buttonGallery.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                buttonHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        buttonGallery.setBackgroundColor(getResources().getColor(R.color.renk_blue_gallery_button));
+                    }
+                }, 100);
                 Intent i;
                 i = new Intent(this, GalleryActivity.class);
                 startActivity(i);
                 break;
         }
-
     }
 
 

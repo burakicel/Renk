@@ -1,38 +1,29 @@
 package com.burakicel.renk;
 
-import android.app.ActionBar;
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Environment;
 import java.io.File;
-import java.net.URI;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-public class GalleryActivity extends ActionBarActivity {
-    private float dpHeight;
-    private float dpWidth;
+public class GalleryActivity extends AppCompatActivity {
+
     private static File[] imageFiles;
-    private Bitmap[] bitmapList;
     DisplayImageOptions options;
     private ImageLoader imageLoader;
 
@@ -41,6 +32,8 @@ public class GalleryActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Universal Image Loader Setup
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getBaseContext()));
 
@@ -54,13 +47,15 @@ public class GalleryActivity extends ActionBarActivity {
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
-        if (!externalStorageAvailable()){
-        }
-        else{
+        if (externalStorageAvailable()){
             final GridView gridview = (GridView) findViewById(R.id.gridview);
+
+            //Getting Pictures from External File (Open to every application)
             File imageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             imageFiles = imageDir.listFiles();
             mThumbIds = decodeFiles(imageFiles);
+
+            //Image Adapter
             gridview.setAdapter(new ImageAdapter());
             gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -72,14 +67,6 @@ public class GalleryActivity extends ActionBarActivity {
                     startActivity(intent);
                 }
             });
-//            DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-//            dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-//            dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-//
-//            GridView gridview = (GridView) findViewById(R.id.gridview);
-//            gridview.setAdapter(new ImageAdapter(this));
-//            gridview.setColumnWidth((int)(dpWidth/1.5-15));
-
         }
     }
 
@@ -131,70 +118,21 @@ public class GalleryActivity extends ActionBarActivity {
         }
     }
 
+    //Picture Array
     static String[] mThumbIds;
 
     protected void onDestroy(){
         super.onDestroy();
     }
 
+    //Checks whether external storage is available or not
     private boolean externalStorageAvailable() {
         return
                 Environment.MEDIA_MOUNTED
                         .equals(Environment.getExternalStorageState());
     }
 
-//    public class ImageAdapter extends BaseAdapter {
-//        private Context mContext;
-//
-//        public ImageAdapter(Context c) {
-//            mContext = c;
-//        }
-//
-//        public int getCount() {
-//            return mThumbIds.length;
-//        }
-//
-//        public Object getItem(int position) {
-//            return null;
-//        }
-//
-//        public long getItemId(int position) {
-//            return 0;
-//        }
-//
-//        // create a new ImageView for each item referenced by the Adapter
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            ImageView imageView;
-//            if (convertView == null) {
-//                // if it's not recycled, initialize some attributes
-//                imageView = new ImageView(mContext);
-//                imageView.setLayoutParams(new GridView.LayoutParams((int)(dpWidth/1-20), (int)(dpWidth/1.5-20)));
-//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            } else {
-//                imageView = (ImageView) convertView;
-//            }
-//
-//            imageView.setImageBitmap(mThumbIds[position]);
-//            return imageView;
-//        }
-//
-//        // references to our images
-//        Bitmap[] mThumbIds = convertFileArraytoBitmapArray(imageFiles);
-//    }
-
-    private Bitmap[] convertFileArraytoBitmapArray(File[] files){
-        int length = files.length;
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = 10; // 1/4
-        opts.inPurgeable = true;
-        Bitmap[] output = new Bitmap[length];
-        for (int i=0;i<length;i++){
-            output[i] = BitmapFactory.decodeFile(imageFiles[i].getAbsolutePath(),opts);
-        }
-        bitmapList = output;
-        return output;
-    }
-
+    //Takes files and decodes them for Image Loader
     private static String[] decodeFiles(File[] files){
         int len = files.length;
         String uri;
@@ -207,13 +145,6 @@ public class GalleryActivity extends ActionBarActivity {
             output[i] = decoded;
         }
         return output;
-    }
-
-    private void recycleBitmap(Bitmap[] bitmapList){
-        int length = bitmapList.length;
-        for (int i=0;i<length;i++){
-            bitmapList[i].recycle();
-        }
     }
 
     @Override

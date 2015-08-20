@@ -1,7 +1,6 @@
 package com.burakicel.renk;
 
 import android.app.Application;
-import android.app.Application;
 import android.content.Context;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -16,7 +15,6 @@ public class MyGridApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         configureDefaultImageLoader(getApplicationContext());
     }
 
