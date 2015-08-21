@@ -21,7 +21,7 @@
 
         <ImageButton
             android:layout_width="@dimen/photo_button_size"
-            android:id="@+id/photoButton"
+            android:id="@+id/photo_button"
             android:layout_height="@dimen/photo_button_size"
             android:scaleType="centerCrop"
             android:layout_centerHorizontal="true"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/renk_description_size"
             android:text="@string/renk_description"
-            android:layout_alignTop="@+id/photoButton"
+            android:layout_alignTop="@+id/photo_button"
             android:layout_marginTop="@dimen/renk_description_margin_top"
             android:gravity="center"
             android:fontFamily="sans-serif-light"/>
