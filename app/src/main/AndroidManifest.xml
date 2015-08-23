@@ -3,6 +3,12 @@
     package="com.burakicel.renk" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -28,7 +34,13 @@
         <activity
             android:name=".ImageDetailActivity"
             android:label="@string/title_activity_image_detail"
-            android:theme="@style/AppCombat">
+            android:theme="@style/AppCombat" >
+        </activity>
+        <activity
+            android:name=".CameraActivity"
+            android:screenOrientation="landscape"
+            android:label="@string/title_activity_camera"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
     </application>
 

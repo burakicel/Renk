@@ -12,4 +12,8 @@
     <style name="AppCombat" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+    </style>
 </resources>
