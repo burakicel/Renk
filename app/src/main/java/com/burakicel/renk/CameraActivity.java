@@ -6,11 +6,18 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.Environment;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.test.suitebuilder.annotation.Suppress;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
@@ -18,6 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.os.Handler;
+
+
+import java.io.IOException;
+import java.util.Date;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -37,6 +49,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import org.opencv.android.Utils;
 
 
 import com.ogaclejapan.arclayout.Arc;
@@ -59,6 +72,11 @@ import android.animation.ObjectAnimator;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +88,8 @@ public class CameraActivity extends Activity implements CvCameraViewListener2,Vi
     View settingsButton;
     View menuLayout;
     ArcLayout arcSettings;
+    View photoButton;
+    boolean photoTake;
 
 
     @Override
@@ -82,15 +102,19 @@ public class CameraActivity extends Activity implements CvCameraViewListener2,Vi
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
 
-        settingsButton = findViewById(R.id.settings);
-        menuLayout = findViewById(R.id.menu_layout);
-        arcSettings = (ArcLayout) findViewById(R.id.arc_settings);
 
-        for (int i = 0, size = arcSettings.getChildCount(); i < size; i++) {
-            arcSettings.getChildAt(i).setOnClickListener(this);
-        }
+        photoButton = findViewById(R.id.photo_button);
+        photoButton.setOnClickListener(this);
 
-        settingsButton.setOnClickListener(this);
+//        settingsButton = findViewById(R.id.settings);
+//        menuLayout = findViewById(R.id.menu_layout);
+//        arcSettings = (ArcLayout) findViewById(R.id.arc_settings);
+//
+//        for (int i = 0, size = arcSettings.getChildCount(); i < size; i++) {
+//            arcSettings.getChildAt(i).setOnClickListener(this);
+//        }
+//
+//        settingsButton.setOnClickListener(this);
 //
 //
 //        //Icons
@@ -156,14 +180,23 @@ public class CameraActivity extends Activity implements CvCameraViewListener2,Vi
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.settings) {
-            onSettingsClick(v);
-            return;
+
+        if (v.getId() == R.id.photo_button){
+            String text = "Picture Taken";
+            toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 300);
+            toast.show();
+            photoTake = true;
         }
 
-        if (v instanceof Button) {
-            showToast((Button) v);
-        }
+//        if (v.getId() == R.id.settings) {
+//            onSettingsClick(v);
+//            return;
+//        }
+//
+//        if (v instanceof Button) {
+//            showToast((Button) v);
+//        }
 
     }
 
@@ -291,6 +324,34 @@ public class CameraActivity extends Activity implements CvCameraViewListener2,Vi
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
+        if (photoTake){
+
+            Bitmap toSave = Bitmap.createBitmap(inputFrame.rgba().cols(), inputFrame.rgba().rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(inputFrame.rgba(),toSave);
+
+            String path = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString();
+            OutputStream fOut = null;
+            String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+            File filename = new File(path, currentDateTimeString+".jpg"); // the File to save to
+            FileOutputStream out = null;
+            try {
+                out = new FileOutputStream(filename);
+                toSave.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+                // PNG is a lossless format, the compression factor (100) is ignored
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            photoTake = false;
+        }
         return inputFrame.rgba();
     }
 
