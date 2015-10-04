@@ -7,4 +7,7 @@
     <string name="gallery">Check Gallery</string>
     <string name="title_activity_gallery">Gallery</string>
     <string name="title_activity_image_detail">Image Preview</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="menu_take_photo">Take Photo</string>
+    <string name="menu_next_camera">Next Camera</string>
 </resources>

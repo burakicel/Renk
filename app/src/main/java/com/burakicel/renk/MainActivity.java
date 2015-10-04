@@ -41,6 +41,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         buttonImage.setImageResource(R.drawable.photo_button);
                     }
                 }, 100);
+                Intent a;
+                a = new Intent(this, CameraActivity.class);
+                startActivity(a);
                 break;
             //Gallery Button
             case R.id.gallery_button:
